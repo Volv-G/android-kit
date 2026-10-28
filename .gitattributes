@@ -1,0 +1,6 @@
+# cmd.exe misreads labels and blocks in LF batch files - goto lands in the
+# wrong place - so these keep CRLF whatever core.autocrlf says.
+*.cmd text eol=crlf
+*.bat text eol=crlf
+# And the POSIX wrapper keeps LF.
+gradlew text eol=lf

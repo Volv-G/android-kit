@@ -1,0 +1,44 @@
+# The versions every app on the kit builds with. Each app's
+# settings.gradle.kts reads this as the "kit" catalog:
+#
+#   versionCatalogs { create("kit") { from(files("kit/versions.toml")) } }
+#
+# and uses it as kit.plugins.android.application, kit.androidx.core,
+# kit.versions.compileSdk. One place to raise them, and the apps share
+# their plugins and dependencies in the Gradle cache. A library only one
+# app uses stays in that app's build file.
+#
+# Why these and not older - none of it is a preference:
+#
+#   compileSdk 36   VME's RootEncoder 2.7.5 is compiled against API 36,
+#                   and every one of its modules fails the build of an app
+#                   compiling against less. bootstrap.ps1 installs the
+#                   platform and build tools for this level.
+#   agp 8.13        API 36 needs AGP 8.9+; 8.13 needs the Gradle 8.13+ in
+#                   gradle/wrapper and a Kotlin plugin that knows it.
+#   kotlin 2.3      JitPack built RootEncoder with Kotlin 2.3, and an
+#                   older compiler rejects its metadata with "Module was
+#                   compiled with an incompatible version of Kotlin".
+#                   Earlier pins of 1.9.25 and 2.1.21 did not compile -
+#                   left as a note so nobody "simplifies" them back.
+#   java 17         what AGP 8 runs on, and the JDK bootstrap.ps1 installs.
+
+[versions]
+agp = "8.13.2"
+kotlin = "2.3.21"
+compileSdk = "36"
+targetSdk = "36"
+java = "17"
+
+[libraries]
+androidx-core = "androidx.core:core-ktx:1.13.1"
+androidx-activity = "androidx.activity:activity:1.9.3"
+androidx-work = "androidx.work:work-runtime-ktx:2.10.1"
+junit = "junit:junit:4.13.2"
+# org.json is part of Android, but the copy on the unit-test classpath is a
+# stub that returns defaults; this one makes a parser test mean something.
+json = "org.json:json:20240303"
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

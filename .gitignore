@@ -1,0 +1,2 @@
+# A binary we did not build: bootstrap.ps1 generates it per machine.
+gradle/wrapper/gradle-wrapper.jar
